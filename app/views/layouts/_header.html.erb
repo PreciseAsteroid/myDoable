@@ -1,0 +1,14 @@
+<header class="w-full bg-[#F6ECD9] border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between h-14">
+    <h1 class="site-logo m-0">
+      <%= link_to "Doable", projects_path, class: "text-indigo-600 font-semibold text-lg tracking-tight" %>
+    </h1>
+
+    <nav aria-label="Main">
+      <ul class="flex items-center space-x-6 text-gray-700">
+        <li><%= link_to "Projects", projects_path, class: "hover:text-indigo-600 font-medium" %></li>
+        <li><%= link_to "Todos", todos_path, class: "hover:text-indigo-600 font-medium" %></li>
+      </ul>
+    </nav>
+  </div>
+</header>

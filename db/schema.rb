@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_28_223120) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_07_005655) do
   create_table "projects", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip_address"
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -26,8 +37,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_223120) do
     t.integer "priority", default: 1, null: false
     t.integer "project_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["project_id"], name: "index_todos_on_project_id"
+    t.index ["user_id"], name: "index_todos_on_user_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
+  add_foreign_key "projects", "users"
+  add_foreign_key "sessions", "users"
   add_foreign_key "todos", "projects"
+  add_foreign_key "todos", "users"
 end

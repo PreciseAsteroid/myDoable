@@ -8,6 +8,11 @@
       <ul class="flex items-center space-x-6 text-gray-700">
         <li><%= link_to "Projects", projects_path, class: "hover:text-indigo-600 font-medium" %></li>
         <li><%= link_to "Todos", todos_path, class: "hover:text-indigo-600 font-medium" %></li>
+       <% if Current.user %>
+                <%= button_to "Logout", session_path, method: :delete, class: "hover:text-indigo-600 font-medium" %>
+              <% else %>
+                <%= button_to "Login", new_session_path, class: "hover:text-indigo-600 font-medium" %>
+      <% end %>
       </ul>
     </nav>
   </div>

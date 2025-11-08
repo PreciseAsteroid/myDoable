@@ -1,0 +1,51 @@
+# fly.toml app configuration file generated for doable on 2025-11-08T20:32:28+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'doable'
+primary_region = 'cdg'
+console_command = '/rails/bin/rails console'
+
+[build]
+
+[env]
+  DATABASE_URL = 'sqlite3:///data/production.sqlite3'
+  PORT = '8080'
+  RAILS_ENV = "production"
+  SECRET_KEY_BASE = "e2ab97de5906271b4e28d03393b8686a7a865d47eed2a8cc74a281c4d741d04db32c90db4d8d28a8c942fe82d71f7e13ba1af991acced151a4ac7f1db517eba3"
+
+[processes]
+  app = './bin/rake litestream:run ./bin/rails server'
+
+[[mounts]]
+  source = 'data'
+  destination = '/data'
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = '1GB'
+  auto_extend_size_limit = '10GB'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '10s'
+    timeout = '2s'
+    grace_period = '5s'
+    method = 'GET'
+    path = '/up'
+    protocol = 'http'
+    tls_skip_verify = false
+
+    [http_service.checks.headers]
+      X-Forwarded-Proto = 'https'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
